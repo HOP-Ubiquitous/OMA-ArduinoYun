@@ -6,20 +6,20 @@ The goal of these scripts is help participants (hackathons) during the environme
 
 Original instructions (created by msangoi) can be found in the following wiki/repository: https://github.com/msangoi/wakaama/wiki/Run-Wakaama-on-the-Arduino-Yun
 
-### NetworkInfoSketch
+#### NetworkInfoSketch
 
-#### Description
+##### Description
 Arduino Yun sketch to show the AP name and the private IP. Based on the WifiStatus sketch example.
 
-#### Instructions
+##### Instructions
 Install the sketch using the arduino IDE and open the Serial Monitor to obtain the information.
 
-### FirmwareUpdate
+#### FirmwareUpdate
 
-#### Description
+##### Description
 Script to update the Arduino Yun firmware without SD Card. Directly over ssh. 
 
-#### Instructions
+##### Instructions
 Download the firmware, place the file in the script folder and execute the script.
 
 Firmwares for most common devices can be found:
@@ -31,20 +31,20 @@ Firmwares for most common devices can be found:
 ./updateArduinoYunFirmware <binaryfile>
 ```
 
-### SoftwareUpgrade
+#### SoftwareUpgrade
 
-#### Description
+##### Description
 Upgrades all packages of the Arduino Yun (opkg update).
 
-#### Instructions
+##### Instructions
 Run the command and wait until done.
 ```
 ./updateArduinoYunSoftware>
 ```
 
-### LwM2M
+#### LwM2M
 
-#### Description
+##### Description
 Contains scripts to compile and copy a wakaama LwM2M Client into the Arduino Yun.
 
 - **1.prepareCompilation**: Download openwrt cross-compiler (last tested version) and wakaama (from github) if not present. Then create a folder for compilation with a toolchain configuration file.
@@ -52,5 +52,5 @@ Contains scripts to compile and copy a wakaama LwM2M Client into the Arduino Yun
 - **3.copyLwM2MClientToDevice**: Uses ssh to copy a compiled LwM2M Client to the Arduino Yun.
 - **4.executeClient**: Opens a ssh connection against the Arduino Yun to let you execute/work with the LwM2M Client.
 
-#### Instructions
+##### Instructions
 Execute scripts in order, they will download the dependencies, create the toolchain, compile and open a console against the device to finally run the wakaama LwM2M Client.
