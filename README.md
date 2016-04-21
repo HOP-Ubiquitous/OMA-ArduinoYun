@@ -6,13 +6,22 @@ Arduino Yun sketch to show the AP name and the private IP.
 
 ##1-FirmwareUpdate
 
-Script to update the
+Script to update the Arduino Yun firmware without SD Card. Directly over ssh. Common firmwares can be found at:
 
-firmwareUpdate <firmware file>
+- Arduino Yun: https://www.arduino.cc/en/Main/Software
+- Seeeduino: http://www.seeedstudio.com/wiki/Seeeduino_Cloud#Upgrade_Firmware
+
+```
+./updateArduinoYunFirmware <binaryfile>
+```
 
 ##2-SoftwareUpgrade
 
-Upgrades all packages in the Arduino Yun (opkg update)
+Upgrades all packages in the Arduino Yun (opkg update).
+
+```
+./updateArduinoYunSoftware>
+```
 
 ##3-LwM2M
 
