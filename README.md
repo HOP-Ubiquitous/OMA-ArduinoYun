@@ -38,7 +38,7 @@ NetworkInfoSketch can be used to get the IP of the device.
 Requires sshpass package which can be installed using: `sudo apt-get install sshpass`
 
 ##### Instructions
-Download the firmware and place the file in the script folder, then execute the script.
+Download the firmware and execute the script specifying the route to the .bin file (firmware image).
 
 Latest firmwares for some devices can be found:
 
@@ -46,7 +46,7 @@ Latest firmwares for some devices can be found:
 - Seeeduino Cloud: http://www.seeedstudio.com/wiki/Seeeduino_Cloud#Upgrade_Firmware
 
 ```
-./updateArduinoYunFirmware <binaryfile>
+./updateArduinoYunFirmware <routetobinaryfile>
 ```
 
 #### SoftwareUpgrade

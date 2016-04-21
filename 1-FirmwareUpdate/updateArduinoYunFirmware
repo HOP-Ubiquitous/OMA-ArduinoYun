@@ -18,7 +18,15 @@ echo
 # Check firmware binary specified
 if [ $# -ne 1 ] 
 then
-  echo "Binary file not specified. Use ./updateFirmware <binaryfile>"
+  echo "Binary file not specified. Use ./updateFirmware <routetobinaryfile>
+  
+Download the firmware and execute the script specifying the route to the .bin file (firmware image).
+  
+Latest firmwares for some devices can be found:
+  
+ - Arduino Yun: https://www.arduino.cc/en/Main/Software
+ - Seeeduino Cloud: http://www.seeedstudio.com/wiki/Seeeduino_Cloud#Upgrade_Firmware
+ "
   exit 1
 else
   imageFile=$1
@@ -85,15 +93,18 @@ else
 fi
 echo
 
+# Extract file name
+fileName="${imageFile##*/}"
+
 # TODO: Replace to rm -f *.bin?
 echo "Removing previous image from device..."
-sshpass -e ssh -o StrictHostKeyChecking=no -l "$user" "$targetip" "rm -f /tmp/openwrt-ar71xx-generic-yun* ; rm -f /tmp/dragino2-yun-seeed* ; rm -f /tmp/$imageFile;"
+sshpass -e ssh -o StrictHostKeyChecking=no -l "$user" "$targetip" "rm -f /tmp/openwrt-ar71xx-generic-yun* ; rm -f /tmp/dragino2-yun-seeed* ; rm -f /tmp/$fileName;"
 
 echo "Uploading firmware to device..."
 sshpass -e scp "$imageFile" root@"$targetip":/tmp
 
 echo "Updating device firmware. Do not disconnect the device."
-sshpass -e ssh -o StrictHostKeyChecking=no -l "$user" "$targetip" "sysupgrade /tmp/$imageFile"
+sshpass -e ssh -o StrictHostKeyChecking=no -l "$user" "$targetip" "sysupgrade /tmp/$fileName"
 
 # Remove environment variable
 unset SSHPASS
