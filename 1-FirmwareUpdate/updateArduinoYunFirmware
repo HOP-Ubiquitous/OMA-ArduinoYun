@@ -1,0 +1,99 @@
+#!/bin/bash
+#
+# Script to update the Arduino Yun firmware via ssh (without SD card)
+#
+# * Requires sshpass package (sudo apt-get install sshpass)
+#
+# Firmwares can be found at:
+#
+# Arduino Yun: https://www.arduino.cc/en/Main/Software
+# Seeeduino: http://www.seeedstudio.com/wiki/Seeeduino_Cloud#Upgrade_Firmware
+#
+# Created: 
+#   David Fdez (davidfr@hopu.eu)
+#
+
+echo
+
+# Check firmware binary specified
+if [ $# -ne 1 ] 
+then
+  echo "Binary file not specified. Use ./updateFirmware <binaryfile>"
+  exit 1
+else
+  imageFile=$1
+fi
+
+if ! type sshpass > /dev/null; then
+  echo "sshpass command is required to run this script. You can use <sudo apt-get install sshpass> to install it. Abort"
+  exit 1
+fi
+
+
+# Requesting target ip
+echo -n "Target IP [192.168.240.1]: "
+read targetip
+
+# If no target ip specified, then default is arduino.local (192.168.240.1)
+if [ -z $targetip ] 
+then
+  targetip=192.168.240.1
+fi
+
+if [ "$targetip" != "192.168.240.1" ] 
+then
+	# Check if IPv4 is correct formatted
+	if expr "$targetip" : '[0-9][0-9]*\.[0-9][0-9]*\.[0-9][0-9]*\.[0-9][0-9]*$' >/dev/null; then
+	  IFS=.
+	  set $targetip
+	  for quad in 1 2 3 4; do
+	    if eval [ \$$quad -gt 255 ]; then
+	      echo "Specified IPv4 does not have the correct format."
+	      exit 1
+	    fi
+	  done
+	else
+	  echo "Specified IPv4 does not have the correct format."
+	  exit 1
+	fi
+fi
+
+# Requesting user
+echo -n "User [root]: "
+read -s user
+echo 
+
+# If no user specified, then default is root
+if [ -z $user ] 
+then
+  user=root
+fi
+
+# Requesting password to user
+echo -n "Root password: "
+read -s pass
+echo
+
+# Check password specified
+if [ -z $pass ] 
+then
+  echo "No password provided."
+  exit 1
+else 
+  # Store as environment variable
+  export SSHPASS=$pass
+fi
+echo
+
+# TODO: Replace to rm -f *.bin?
+echo "Removing previous image from device..."
+sshpass -e ssh -o StrictHostKeyChecking=no -l "$user" "$targetip" "rm -f /tmp/openwrt-ar71xx-generic-yun* ; rm -f /tmp/dragino2-yun-seeed* ; rm -f /tmp/$imageFile;"
+
+echo "Uploading firmware to device..."
+sshpass -e scp "$imageFile" root@"$targetip":/tmp
+
+echo "Updating device firmware. Do not disconnect the device."
+sshpass -e ssh -o StrictHostKeyChecking=no -l "$user" "$targetip" "sysupgrade /tmp/$imageFile"
+
+# Remove environment variable
+unset SSHPASS

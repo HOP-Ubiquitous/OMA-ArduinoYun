@@ -1,0 +1,85 @@
+#!/bin/bash
+#
+# Script to update the Arduino Yun packages via ssh
+#
+# * Requires sshpass package (sudo apt-get install sshpass)
+#
+# Created: 
+#   David Fdez (davidfr@hopu.eu)
+#
+
+echo
+
+if ! [ -f "build/lwm2mclient" ]  ; then
+    echo "Compiled LwM2M Client program does not exists (build/lwm2mclient). Abort"
+    exit 1
+fi
+
+if ! type sshpass > /dev/null; then
+  echo "sshpass command is required to run this script. You can use <sudo apt-get install sshpass> to install it. Abort"
+  exit 1
+fi
+
+
+# Requesting target ip
+echo -n "Target IP: "
+read targetip
+
+# If no target ip specified, then default is arduino.local (192.168.240.1)
+if [ -z $targetip ] 
+then
+  echo "No target IP provided."
+  exit 1
+fi
+
+
+# Check if IPv4 is correct formatted
+if expr "$targetip" : '[0-9][0-9]*\.[0-9][0-9]*\.[0-9][0-9]*\.[0-9][0-9]*$' >/dev/null; then
+IFS=.
+set $targetip
+for quad in 1 2 3 4; do
+    if eval [ \$$quad -gt 255 ]; then
+    echo "Specified IPv4 does not have the correct format."
+    exit 1
+    fi
+done
+else
+echo "Specified IPv4 does not have the correct format."
+exit 1
+fi
+
+# Requesting user
+echo -n "User [root]: "
+read user
+
+# If no user specified, then default is root
+if [ -z $user ] 
+then
+  user=root
+fi
+
+# Requesting password to user
+echo -n "Root password: "
+read -s pass
+echo
+
+# Check password specified
+if [ -z $pass ] 
+then
+  echo "No password provided."
+  exit 1
+else 
+  # Store as environment variable
+  export SSHPASS=$pass
+fi
+echo
+
+echo "Uploading firmware to device..."
+sshpass -e scp build/lwm2mclient "$user"@"$targetip":/root
+
+if [ $? -eq 0 ] ; then
+    echo "Done."
+fi
+
+# Remove environment variable
+unset SSHPASS

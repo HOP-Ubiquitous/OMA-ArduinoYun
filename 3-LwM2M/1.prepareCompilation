@@ -1,0 +1,84 @@
+#!/bin/bash
+#
+# Script to prepare the compilation environment of a wakaama client for Arduino Yun
+#
+# Created: 
+#   David Fdez (davidfr@hopu.eu)
+#
+
+echo
+
+# Checks if <openwrt> folder exists 
+if [ -d "openwrt" ] && [ -d "openwrt/staging_dir" ] ; then
+    echo "OpenWRT cross-compiler already present"
+else
+    echo "OpenWRT cross-compiler not present (a folder called 'openwrt')."
+    echo "You can download manually the last version from https://downloads.openwrt.org/ or"
+    echo -n "Download automatically the last tested (12.09) version? [y] "
+    read answer
+    echo 
+
+    # If agree without write
+    if [ -z $answer ] 
+    then
+      answer=y
+    else
+        if ! [ "$answer" == "y" ] && ! [ "$answer" == "n" ] ; then
+            echo "Response not valid, abort. "
+            exit 1
+        fi
+    fi
+    
+    if [ "$answer" == "y" ] ; then
+    
+        if ! [ -f "OpenWrt-SDK-atheros-for-linux-i486-gcc-4.6-linaro_uClibc-0.9.33.2.tar.bz2" ] ; then
+            echo "Downloading OpenWRT 12.09 for Atheros..."
+            wget https://downloads.openwrt.org/attitude_adjustment/12.09/atheros/generic/OpenWrt-SDK-atheros-for-linux-i486-gcc-4.6-linaro_uClibc-0.9.33.2.tar.bz2
+        fi
+    
+        echo "Extracting... "
+        tar xjf OpenWrt-SDK-atheros-for-linux-i486-gcc-4.6-linaro_uClibc-0.9.33.2.tar.bz2
+        mv OpenWrt-SDK-atheros-for-linux-i486-gcc-4.6-linaro_uClibc-0.9.33.2 openwrt
+    else
+        echo "Abort"
+    fi
+    
+    
+fi
+
+# Download last wakaama project from github if does not already exists
+if ! [ -d "wakaama" ]  ; then
+    echo "Downloading wakaama project"
+    git clone https://github.com/eclipse/wakaama
+else
+    echo "Wakaama project already present"
+fi
+
+# Create a copy of the current client example to modify
+cp -fr wakaama/examples/client wakaama/examples/arduinoyunclient
+
+# Add little endian declaration to arduinoyunclient
+echo "add_definitions(-DLWM2M_LITTLE_ENDIAN)" >> wakaama/examples/arduinoyunclient/CMakeLists.txt
+
+echo "Creating build dir and toolchain for cross-compilation"
+    
+# Create folder and toolchain to build project if does not already exists
+if ! [ -d "build" ]  ; then
+    mkdir build
+fi
+
+
+if ! [ -f "build/toolchain.cmake" ]  ; then
+
+    echo "SET(CMAKE_SYSTEM_NAME Linux)
+    SET(CMAKE_C_COMPILER `pwd`/openwrt/staging_dir/toolchain-mips_gcc-4.6-linaro_uClibc-0.9.33.2/bin/mips-openwrt-linux-gcc)    
+    SET(CMAKE_FIND_ROOT_PATH `pwd`/openwrt/staging_dir/toolchain-mips_gcc-4.6-linaro_uClibc-0.9.33.2)    
+    SET(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)    
+    SET(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)    
+    SET(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)" > build/toolchain.cmake
+
+fi
+
+echo "Done."
+
+#export STAGING_DIR="$ABSPATH"/openwrt/staging_dir

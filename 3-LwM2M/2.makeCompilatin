@@ -1,0 +1,34 @@
+#!/bin/bash
+#
+# Script to compile a wakaama client example for Arduino Yun
+#
+# * Requieres cmake (sudo apt-get install cmake)
+#
+# Created: 
+#   David Fdez (davidfr@hopu.eu)
+#
+
+echo
+
+
+if ! type cmake > /dev/null; then
+  echo "cmake command is required to run this script. You can use <sudo apt-get install cmake> to install it. Abort"
+  exit 1
+fi
+
+cd build
+
+export STAGING_DIR=`pwd`/openwrt/staging_dir
+
+cmake -DCMAKE_TOOLCHAIN_FILE=toolchain.cmake ../wakaama/examples/arduinoyunclient
+
+if [ $? -eq 0 ] ; then
+    make
+    if [ $? -eq 0 ] ; then
+    echo "Done."
+    fi
+fi
+
+unset STAGING_DIR
+
+cd ..
