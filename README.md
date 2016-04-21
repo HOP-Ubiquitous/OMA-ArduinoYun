@@ -31,6 +31,8 @@ Lot of guides indicates how to update the firmware using a SD card but this can 
 
 NetworkInfoSketch can be used to get the IP of the device.
 
+Requires sshpass package which can be installed using: `sudo apt-get install sshpass`
+
 ##### Instructions
 Download the firmware and place the file in the script folder, then execute the script.
 
@@ -49,6 +51,8 @@ Latest firmwares for some devices can be found:
 Usually this is not necessary, but its pleasurable to know the device is totally updated (even the internal packets).
 
 NetworkInfoSketch can be used to get the IP of the device.
+
+Requires sshpass package which can be installed using: `sudo apt-get install sshpass`
 
 ##### Instructions
 Run the command and wait until done.
@@ -72,6 +76,8 @@ Four scripts to prepare, compile, copy and almost run wakaama LwM2M Client into 
   - Opens a ssh connection against the Arduino Yun to let you execute/work with the LwM2M Client.
 
 NetworkInfoSketch can be used to get the IP of the device.
+
+Requires cmake and sshpass package which can be installed using: `sudo apt-get cmake install sshpass`
 
 ##### Instructions
 Execute scripts in order, they will download the dependencies, create the toolchain, compile and open a console against the device to finally run the wakaama LwM2M Client with some command such as:
