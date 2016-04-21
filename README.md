@@ -31,6 +31,8 @@ If not sure if your Arduino Yun is running the latest firmware available, is alw
 
 Lot of guides indicates how to update the firmware using a SD card but this can be done directly via ssh. Just ensure you are connected in the same network of your Arduino Yun (Arduino Yun access point or other).
 
+If you are sure your Arduino Yun owns the latest version then could be interesting carry out a clean in the device by pushing the "WLAN RST" button during 30 seconds.
+
 NetworkInfoSketch can be used to get the IP of the device.
 
 Requires sshpass package which can be installed using: `sudo apt-get install sshpass`
