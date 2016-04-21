@@ -11,6 +11,10 @@ Original instructions (created by msangoi) can be found in the following wiki/re
 ##### Description
 Arduino Yun sketch to show the AP name and the private IP. Based on the WifiStatus sketch example.
 
+When the hackathon starts, a huge amount of access point will be online (such as ArduinoYun-XXXXXXXXXXXX, SeeeduinoCloud-AXXXX, ...) so identify your Arduino Yun could be a problem. This is why this sketch gives you the name of the connected/created AP.
+
+After update the firmware (if necessary) and configure your Arduino Yun with the WIFI connection provided in the hackathon, you will need know the IP assigned to your Arduino Yun by the router. This is why this sketch gives you the assigned IP in the Wifi interface (wlan0) . 
+
 ##### Instructions
 Install the sketch using the arduino IDE and open the Serial Monitor to obtain the information.
 
