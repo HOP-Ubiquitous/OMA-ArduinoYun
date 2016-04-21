@@ -2,7 +2,7 @@
 
 Sketch and some linux scripts to accelerate the work with wakaama LwM2M Client and Arduino Yun. :+1:
 
-###0 NetworkInfoSketch
+### NetworkInfoSketch
 
 #### Description
 Arduino Yun sketch to show the AP name and the private IP. 
@@ -10,7 +10,7 @@ Arduino Yun sketch to show the AP name and the private IP.
 #### Instructions
 Install the sketch using the arduino IDE and open the Serial Monitor to obtain the information.
 
-###1 FirmwareUpdate
+### FirmwareUpdate
 
 #### Description
 Script to update the Arduino Yun firmware without SD Card. Directly over ssh. 
@@ -27,7 +27,7 @@ Firmwares for most common devices can be found:
 ./updateArduinoYunFirmware <binaryfile>
 ```
 
-###2 SoftwareUpgrade
+### SoftwareUpgrade
 
 #### Description
 Upgrades all packages in the Arduino Yun (opkg update).
@@ -38,10 +38,13 @@ Run the command and wait until done.
 ./updateArduinoYunSoftware>
 ```
 
-###3 LwM2M
+### LwM2M
 
 #### Description
-Contains scripts to compile and copy a wakaama LwM2M Client into the Arduino Yun
+Contains scripts to compile and copy a wakaama LwM2M Client into the Arduino Yun.
+
+- 
+
 
 #### Instructions
 Execute scripts in order, they will download the dependencies, create the toolchain, compile and open a console against the device to finally run the wakaama LwM2M Client.
