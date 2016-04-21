@@ -15,6 +15,8 @@ When the hackathon starts, a huge amount of access point will be online (such as
 
 After update the firmware (if necessary) and configure your Arduino Yun with the WIFI connection provided in the hackathon, you will need know the IP assigned to your Arduino Yun by the router. This is why this sketch gives you the assigned IP in the Wifi interface (wlan0). 
 
+This sketch does not interfere with the rest of work since is running in one of the two processors placed in the Arduino Yun. It basically it's opening a bridge to communicate and extract the information from the other processor (running openwrt based linux).
+
 ##### Instructions
 Install the sketch using the arduino IDE and open the Serial Monitor to obtain the information.
 
