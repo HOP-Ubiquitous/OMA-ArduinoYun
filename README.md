@@ -4,6 +4,8 @@ Sketch and some linux scripts to accelerate the prepartion of the environment to
 
 The goal of these scripts is help participants (hackathons) during the environment preparation to accelerate the work and ensure results.
 
+To start to work now with wakaama and Arduino Yun simply clone this repository (`git clone https://github.com/davidfdezros/ArduinoYunOMA`) and execute the scripts in order (`./scriptname`).
+
 Original instructions (created by msangoi) can be found in the following wiki/repository: https://github.com/msangoi/wakaama/wiki/Run-Wakaama-on-the-Arduino-Yun
 
 #### NetworkInfoSketch
