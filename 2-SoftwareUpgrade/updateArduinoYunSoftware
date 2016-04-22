@@ -73,5 +73,7 @@ echo
 echo "Updating packages in device..."
 sshpass -e ssh -o StrictHostKeyChecking=no -l "$user" "$targetip" "opkg update"
 
+echo "Done."
+
 # Remove environment variable
 unset SSHPASS
