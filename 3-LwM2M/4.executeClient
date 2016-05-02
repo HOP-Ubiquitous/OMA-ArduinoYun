@@ -70,7 +70,7 @@ fi
 echo
 
 echo "Connecting to device via ssh..."
-echo "The following command is an example of connect with a eclipse leshan demo server:"
+echo "Next command is an example to connect with the eclipse leshan demo server:"
 echo "      ./lwm2mclient -h leshan.eclipse.org -n arduino-yun-client -4"
 
 sshpass -e ssh "$user"@"$targetip"

@@ -16,9 +16,9 @@ if ! type cmake > /dev/null; then
   exit 1
 fi
 
-cd build
-
 export STAGING_DIR=`pwd`/openwrt/staging_dir
+
+cd build
 
 cmake -DCMAKE_TOOLCHAIN_FILE=toolchain.cmake ../wakaama/examples/arduinoyunclient
 

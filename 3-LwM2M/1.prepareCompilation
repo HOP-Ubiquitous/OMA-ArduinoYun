@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Script to prepare the compilation environment of a wakaama client for Arduino Yun
+# Script to prepare the compilation environment of wakaama client for Arduino Yun
 #
 # Created: 
 #   David Fdez (davidfr@hopu.eu)
@@ -8,41 +8,71 @@
 
 echo
 
+if ! type git > /dev/null; then
+  echo "git command is required to run this script. You can use <sudo apt-get install git> to install it. Abort"
+  exit 1
+fi
+
 # Checks if <openwrt> folder exists 
 if [ -d "openwrt" ] && [ -d "openwrt/staging_dir" ] ; then
-    echo "OpenWRT cross-compiler already present"
+    echo "An OpenWRT cross-compiler already present (a folder called 'openwrt')"
 else
     echo "OpenWRT cross-compiler not present (a folder called 'openwrt')."
-    echo "You can download manually the last version from https://downloads.openwrt.org/ or"
-    echo -n "Download automatically the last tested (12.09) version? [y] "
+    echo "You can download manually from https://downloads.openwrt.org/ or"
+    echo "Download automatically through this script by selecting the desired version"
+    echo "1) OpenWRT cross-compiler 12.09 (gcc 4.6 - tested in Ubuntu 14.04)"
+    echo "2) OpenWRT cross-compiler 15.05 (gcc 4.8 - tested in Ubuntu 16.04)"
+    echo "3) I will download manually"
+    echo -n "Selected option: "
     read answer
     echo 
 
     # If agree without write
     if [ -z $answer ] 
     then
-      answer=y
+      echo "No option selected. Aborting script."
+      exit 0
     else
-        if ! [ "$answer" == "y" ] && ! [ "$answer" == "n" ] ; then
-            echo "Response not valid, abort. "
+        if ! [ "$answer" == "1" ] && ! [ "$answer" == "2" ] && ! [ "$answer" == "3" ] ; then
+            echo "Response not valid, aborting script. "
             exit 1
         fi
     fi
     
-    if [ "$answer" == "y" ] ; then
-    
-        if ! [ -f "OpenWrt-SDK-atheros-for-linux-i486-gcc-4.6-linaro_uClibc-0.9.33.2.tar.bz2" ] ; then
-            echo "Downloading OpenWRT 12.09 for Atheros..."
-            wget https://downloads.openwrt.org/attitude_adjustment/12.09/atheros/generic/OpenWrt-SDK-atheros-for-linux-i486-gcc-4.6-linaro_uClibc-0.9.33.2.tar.bz2
-        fi
-    
-        echo "Extracting... "
-        tar xjf OpenWrt-SDK-atheros-for-linux-i486-gcc-4.6-linaro_uClibc-0.9.33.2.tar.bz2
-        mv OpenWrt-SDK-atheros-for-linux-i486-gcc-4.6-linaro_uClibc-0.9.33.2 openwrt
-    else
-        echo "Abort"
-    fi
-    
+	if [ "$answer" == "3" ]; then
+	    echo "Aborting script. OpenWRT will be downloaded manually. "
+	    exit 1
+	fi
+
+
+	if [ "$answer" == "1" ]; then
+
+
+		if ! [ -f "OpenWrt-SDK-atheros-for-linux-i486-gcc-4.6-linaro_uClibc-0.9.33.2.tar.bz2" ] ; then
+		    echo "Downloading OpenWRT 12.09 for Atheros..."
+		    wget https://downloads.openwrt.org/attitude_adjustment/12.09/atheros/generic/OpenWrt-SDK-atheros-for-linux-i486-gcc-4.6-linaro_uClibc-0.9.33.2.tar.bz2
+		fi
+	    
+		echo "Extracting... "
+		tar xjf OpenWrt-SDK-atheros-for-linux-i486-gcc-4.6-linaro_uClibc-0.9.33.2.tar.bz2
+		mv OpenWrt-SDK-atheros-for-linux-i486-gcc-4.6-linaro_uClibc-0.9.33.2 openwrt
+
+	fi
+
+	if [ "$answer" == "2" ]; then
+
+		if ! [ -f "OpenWrt-SDK-15.05.1-ar71xx-generic_gcc-4.8-linaro_uClibc-0.9.33.2.Linux-x86_64.tar.bz2" ] ; then
+		    echo "Downloading OpenWRT 15.05 for Atheros..."
+		    wget https://downloads.openwrt.org/chaos_calmer/15.05.1/ar71xx/generic/OpenWrt-SDK-15.05.1-ar71xx-generic_gcc-4.8-linaro_uClibc-0.9.33.2.Linux-x86_64.tar.bz2
+		fi
+	    
+		echo "Extracting... "
+		tar xjf OpenWrt-SDK-15.05.1-ar71xx-generic_gcc-4.8-linaro_uClibc-0.9.33.2.Linux-x86_64.tar.bz2
+		mv OpenWrt-SDK-15.05.1-ar71xx-generic_gcc-4.8-linaro_uClibc-0.9.33.2.Linux-x86_64 openwrt
+
+
+	fi
+
     
 fi
 
@@ -50,25 +80,26 @@ fi
 if ! [ -d "wakaama" ]  ; then
     echo "Downloading wakaama project"
     git clone https://github.com/eclipse/wakaama
+
+    # Create a copy of the current client example to modify
+    cp -fr wakaama/examples/client wakaama/examples/arduinoyunclient
+
+    # Add little endian declaration to arduinoyunclient
+    echo "add_definitions(-DLWM2M_LITTLE_ENDIAN)" >> wakaama/examples/arduinoyunclient/CMakeLists.txt
+
 else
-    echo "Wakaama project already present"
+    echo "Wakaama project already present."
 fi
 
-# Create a copy of the current client example to modify
-cp -fr wakaama/examples/client wakaama/examples/arduinoyunclient
-
-# Add little endian declaration to arduinoyunclient
-echo "add_definitions(-DLWM2M_LITTLE_ENDIAN)" >> wakaama/examples/arduinoyunclient/CMakeLists.txt
 
 echo "Creating build dir and toolchain for cross-compilation"
-    
 # Create folder and toolchain to build project if does not already exists
 if ! [ -d "build" ]  ; then
     mkdir build
 fi
 
 
-if ! [ -f "build/toolchain.cmake" ]  ; then
+if [ "$answer" == "1" ]; then
 
     echo "SET(CMAKE_SYSTEM_NAME Linux)
     SET(CMAKE_C_COMPILER `pwd`/openwrt/staging_dir/toolchain-mips_gcc-4.6-linaro_uClibc-0.9.33.2/bin/mips-openwrt-linux-gcc)    
@@ -76,9 +107,18 @@ if ! [ -f "build/toolchain.cmake" ]  ; then
     SET(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)    
     SET(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)    
     SET(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)" > build/toolchain.cmake
+fi
+
+if [ "$answer" == "2" ]; then
+
+    echo "SET(CMAKE_SYSTEM_NAME Linux)
+    SET(CMAKE_C_COMPILER `pwd`/openwrt/staging_dir/toolchain-mips_34kc_gcc-4.8-linaro_uClibc-0.9.33.2/bin/mips-openwrt-linux-gcc)    
+    SET(CMAKE_FIND_ROOT_PATH `pwd`/openwrt/staging_dir/toolchain-mips_34kc_gcc-4.8-linaro_uClibc-0.9.33.2)    
+    SET(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)    
+    SET(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)    
+    SET(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)" > build/toolchain.cmake
 
 fi
 
-echo "Done."
+echo "Done. [ wakaama/examples/arduinoyunclient is the project you should work ]"
 
-#export STAGING_DIR="$ABSPATH"/openwrt/staging_dir
