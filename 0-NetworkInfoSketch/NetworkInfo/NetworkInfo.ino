@@ -1,21 +1,15 @@
-/*
-  WiFi Status
-
- This sketch runs a script called "pretty-wifi-info.lua"
- installed on your Yún in folder /usr/bin.
- It prints information about the status of your wifi connection.
-
- It uses Serial to print, so you need to connect your Yún to your
- computer using a USB cable and select the appropriate port from
- the Port menu
-
- created  18 June 2013
- By Federico Fissore
-
- This example code is in the public domain.
-
- http://www.arduino.cc/en/Tutorial/YunWiFiStatus
-
+/**
+ * 
+ * Network Info
+ * 
+ * Based on the WifiStatus example sketch, this sketch runs a script called "pretty-wifi-info.lua"
+ * (placed in /usr/bin) and a linux command to provide to the user current wifi access point name and the IP.
+ * 
+ * Created by:
+ *    David Fdez - HOP Ubiquitous S.L. (davidfr@hopu.eu) 
+ *  
+ * This code is in the public domain.
+ *  
  */
 
 #include <Process.h>
@@ -25,10 +19,7 @@ void setup() {
   while (!SerialUSB);     // do nothing until the serial monitor is opened
 
   SerialUSB.println("Starting bridge...\n");
-  pinMode(13, OUTPUT);
-  digitalWrite(13, LOW);
   Bridge.begin();  // make contact with the linux processor
-  digitalWrite(13, HIGH);  // Led on pin 13 turns on when the bridge is ready
 
   delay(2000);  // wait 2 seconds
 }

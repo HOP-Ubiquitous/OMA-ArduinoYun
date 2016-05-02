@@ -1,15 +1,17 @@
 /**
- * 
- * Arduino LwM2M Client.
- * 
- * Description: 
- *    Runs/manage a wakaama LwM2M Client implementation running in the atheros chip through Process class.
- * 
- * Created by:
- *    David Fdez - HOP Ubiquitous S.L. (davidfr@hopu.eu)
- * 
- */
- 
+
+   Arduino LwM2M Client.
+
+   Description:
+      Run/manage an already compiled wakaama LwM2M Client implementation.
+      It runs on the atheros processor and is managed through Process class.
+
+   Created by:
+      David Fdez - HOP Ubiquitous S.L. (davidfr@hopu.eu)
+
+   This code is in the public domain.
+*/
+
 #ifndef ArduinoLwM2M_H
 #define ArduinoLwM2M_H
 
@@ -34,7 +36,7 @@ class ArduinoLwM2M
     bool _initLwM2MClient(bool getDefaultLwM2M);
     bool _downloadLwM2M();
     String _extractSTDOUT(Process p);
-    
+
     bool _getDefaultLwM2M;
     Process _lwm2mProcess;
     String _server;

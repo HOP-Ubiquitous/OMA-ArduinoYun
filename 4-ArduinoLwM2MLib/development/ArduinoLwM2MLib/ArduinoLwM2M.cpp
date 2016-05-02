@@ -1,30 +1,31 @@
 /**
- * 
- * Arduino LwM2M Client.
- * 
- * Description: 
- *    Run/manage an already compiled wakaama LwM2M Client implementation. 
- *    It runs on the atheros processor and is managed through Process class.
- * 
- * Created by:
- *    David Fdez - HOP Ubiquitous S.L. (davidfr@hopu.eu)
- * 
- */
+
+   Arduino LwM2M Client.
+
+   Description:
+      Run/manage an already compiled wakaama LwM2M Client implementation.
+      It runs on the atheros processor and is managed through Process class.
+
+   Created by:
+      David Fdez - HOP Ubiquitous S.L. (davidfr@hopu.eu)
+
+   This code is in the public domain.
+*/
 
 #include "ArduinoLwM2M.h"
 
 
 /**
- * Function:
- *    ArduinoLwM2M constructor
- * 
- * Description:
- *    Initialize an instance the LwM2M Client.
- * 
- * Arguments:
- *    getDefaultLwM2M: Indicate if the library must download the latest compiled version available in the repository
- * 
- */
+   Function:
+      ArduinoLwM2M constructor
+
+   Description:
+      Initialize an instance the LwM2M Client.
+
+   Arguments:
+      getDefaultLwM2M: Indicate if the library must download the latest compiled version available in the repository
+
+*/
 ArduinoLwM2M::ArduinoLwM2M(bool getDefaultLwM2M)
 {
 
@@ -37,19 +38,19 @@ ArduinoLwM2M::ArduinoLwM2M(bool getDefaultLwM2M)
 
 
 /**
- * Function: 
- *    connect
- *    
- * Description:
- *    Connect the LwM2M Client to the specified server.
- * 
- * Arguments:
- *    server: String to specify the LwM2M server.
- *    clientName: String to specify the LwM2M client name.
- * 
- * Return:
- *    True if the LwM2M Client was connected succesfully.
- */
+   Function:
+      connect
+
+   Description:
+      Connect the LwM2M Client to the specified server.
+
+   Arguments:
+      server: String to specify the LwM2M server.
+      clientName: String to specify the LwM2M client name.
+
+   Return:
+      True if the LwM2M Client was connected succesfully.
+*/
 bool ArduinoLwM2M::connect(String server, String clientName)
 {
 
@@ -61,7 +62,7 @@ bool ArduinoLwM2M::connect(String server, String clientName)
     SerialUSB.println("[ArduinoLwM2M] Can't connect. This LwM2M Client is already connected to " + _server + " with client name " + _clientName);
     return false;
   }
-  
+
   // Save server and client name information
   _server = server;
   _clientName = clientName;
@@ -81,17 +82,17 @@ bool ArduinoLwM2M::connect(String server, String clientName)
 
 
 /**
- * Function: 
- *    changeResource
- *    
- * Description:
- *    Changes a resource value in the LwM2M Client.
- * 
- * Arguments:
- *    resource: String to specify the resource to change.
- *    value: String to specify the new value for the resource.
- * 
- */
+   Function:
+      changeResource
+
+   Description:
+      Changes a resource value in the LwM2M Client.
+
+   Arguments:
+      resource: String to specify the resource to change.
+      value: String to specify the new value for the resource.
+
+*/
 void ArduinoLwM2M::changeResource(String resource, String value)
 {
 
@@ -106,17 +107,17 @@ void ArduinoLwM2M::changeResource(String resource, String value)
 
   String output = _extractSTDOUT(_lwm2mProcess);
   //SerialUSB.println(output);
-  
+
 }
 
 /**
- * Function: 
- *    disconnect
- *   
- * Description:
- *    Disconnects the LwM2M Client
- * 
- */
+   Function:
+      disconnect
+
+   Description:
+      Disconnects the LwM2M Client
+
+*/
 void ArduinoLwM2M::disconnect()
 {
 
@@ -132,34 +133,34 @@ void ArduinoLwM2M::disconnect()
 }
 
 /**
- * Function:
- *    isConnected
- *    
- * Description:
- *    Return the current connection state for the LwM2M Client
- * 
- * Return:
- *    True if the device is connected.
- * 
- */
+   Function:
+      isConnected
+
+   Description:
+      Return the current connection state for the LwM2M Client
+
+   Return:
+      True if the device is connected.
+
+*/
 bool ArduinoLwM2M::isConnected()
 {
   return _state;
 }
 
 /**
- * Function:
- *    _extractSTDOUT
- *    
- * Description:
- *    Private function to extract the stdout from a specific process.
- * 
- * Arguments:
- *    p: The process from where to extract the stdout
- * 
- * Return:
- *    A string which contains the process output
- */
+   Function:
+      _extractSTDOUT
+
+   Description:
+      Private function to extract the stdout from a specific process.
+
+   Arguments:
+      p: The process from where to extract the stdout
+
+   Return:
+      A string which contains the process output
+*/
 String ArduinoLwM2M::_extractSTDOUT(Process p)
 {
 
@@ -174,15 +175,15 @@ String ArduinoLwM2M::_extractSTDOUT(Process p)
 
 
 /**
- * Function:
- *    _downloadLwM2M
- *    
- * Description:
- *    Private function to download an already compiled LwM2M Client from the git repository.
- * 
- * Return:
- *    True in case of the LwM2M Client was successfully downloaded
- */
+   Function:
+      _downloadLwM2M
+
+   Description:
+      Private function to download an already compiled LwM2M Client from the git repository.
+
+   Return:
+      True in case of the LwM2M Client was successfully downloaded
+*/
 bool ArduinoLwM2M::_downloadLwM2M()
 {
 
@@ -222,18 +223,18 @@ bool ArduinoLwM2M::_downloadLwM2M()
 }
 
 /**
- * Function:
- *    _downloadLwM2M
- *    
- * Description:
- *    Private function to check the existence of the compiled LwM2M Client. If specified, the LwM2M Client will be downloaded if no exists.
- * 
- * Arguments:
- *    getDefaultLwM2M: Specifies if the library must download the already compiled LwM2M Client.
- *    
- * Return:
- *    True in case of the LwM2M Client was successfully initialized
- */
+   Function:
+      _downloadLwM2M
+
+   Description:
+      Private function to check the existence of the compiled LwM2M Client. If specified, the LwM2M Client will be downloaded if no exists.
+
+   Arguments:
+      getDefaultLwM2M: Specifies if the library must download the already compiled LwM2M Client.
+
+   Return:
+      True in case of the LwM2M Client was successfully initialized
+*/
 bool ArduinoLwM2M::_initLwM2MClient(bool getDefaultLwM2M) {
 
   if (getDefaultLwM2M) {
@@ -255,7 +256,7 @@ bool ArduinoLwM2M::_initLwM2MClient(bool getDefaultLwM2M) {
     }
 
   }
-  
+
   return true;
 
 }

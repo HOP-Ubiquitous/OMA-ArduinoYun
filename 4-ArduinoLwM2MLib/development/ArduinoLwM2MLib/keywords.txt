@@ -1,0 +1,5 @@
+ArduinoLwM2M	KEYWORD1
+connect	KEYWORD2
+changeResource	KEYWORD2
+disconnect	KEYWORD2
+isConnected	KEYWORD2
