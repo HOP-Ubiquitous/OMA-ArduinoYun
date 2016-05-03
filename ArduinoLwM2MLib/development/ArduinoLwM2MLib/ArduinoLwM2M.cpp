@@ -192,7 +192,7 @@ bool ArduinoLwM2M::_downloadLwM2M()
     // Download the latest compiled client script
     File downloadscript = FileSystem.open("/root/download-lwm2mclient.sh", FILE_WRITE);
     downloadscript.print("#!/bin/sh\n");
-    downloadscript.print("curl -kL https://raw.githubusercontent.com/davidfdezros/ArduinoYunOMA/master/wakaamaCCTools/build/lwm2mclient.tar | tar xv\n");
+    downloadscript.print("curl -kL https://raw.githubusercontent.com/HOP-Ubiquitous/OMA-ArduinoYun/master/wakaamaCCTools/build/lwm2mclient.tar | tar xv\n");
     downloadscript.close();  // close the file
 
     // Make the script executable
