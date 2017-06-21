@@ -1,3 +1,7 @@
+## ArduinoYunOMA slides
+
+This work was presented in the Edinburgh 2016 Workshop, the slides can be found [here](https://es.slideshare.net/OpenMobileAlliance/oma-lwm2m-in-arduino-yun-edinburgh-2016-workshop-with-arm). We recommend check the slides before start to work.
+
 ## ArduinoYunOMA
 
 This repository caintains sketch and some linux scripts to accelerate the prepartion of the workspace to work with wakaama and Arduino Yun. The goal of this sketch and the scripts is help to hackathons participants to accelerate the work. Sketch and scripts can be found in 'tools' and 'wakaamaCCTools' folder. Scripts have been tested in Ubuntu 14.04 and Ubuntu 16.04.
