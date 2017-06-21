@@ -86,6 +86,7 @@ if ! [ -d "wakaama" ]  ; then
 
     # Add little endian declaration to arduinoyunclient
     echo "add_definitions(-DLWM2M_LITTLE_ENDIAN)" >> wakaama/examples/arduinoyunclient/CMakeLists.txt
+    echo "add_definitions(-DLWM2M_CLIENT_MODE)" >> wakaama/examples/arduinoyunclient/CMakeLists.txt
 
 else
     echo "Wakaama project already present."
